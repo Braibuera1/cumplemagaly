@@ -275,11 +275,194 @@
       0%, 100% { opacity: 0; transform: scale(1); }
       50%       { opacity: 0.7; transform: scale(1.8); }
     }
+
+    /* ── PASSWORD SCREEN ────────────────────────────── */
+    #lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    #lock-screen.hide {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .lock-card {
+      width: 100%;
+      max-width: 360px;
+      background: linear-gradient(160deg, rgba(253,246,232,0.08) 0%, rgba(253,246,232,0.03) 100%);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      padding: 2.5rem 1.8rem 2.8rem;
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.06);
+      backdrop-filter: blur(14px);
+      animation: cardIn 1s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .lock-icon {
+      font-size: 2.4rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      filter: drop-shadow(0 0 14px var(--gold));
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { filter: drop-shadow(0 0 10px var(--gold)); transform: scale(1); }
+      50%       { filter: drop-shadow(0 0 22px var(--gold-light)); transform: scale(1.08); }
+    }
+
+    .lock-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.2rem, 5vw, 1.5rem);
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+    .lock-hint {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(0.85rem, 3.5vw, 1rem);
+      color: rgba(201,168,76,0.7);
+      letter-spacing: 0.08em;
+      margin-bottom: 2rem;
+    }
+
+    /* date inputs row */
+    .date-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.6rem;
+    }
+    .date-sep {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-top: -2px;
+    }
+    .date-field {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .date-field label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.7rem;
+      font-style: italic;
+      letter-spacing: 0.15em;
+      color: rgba(201,168,76,0.6);
+      text-transform: uppercase;
+    }
+    .date-input {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 2px;
+      color: var(--cream);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -moz-appearance: textfield;
+      padding: 0.4rem 0;
+    }
+    .date-input::-webkit-inner-spin-button,
+    .date-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .date-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 12px rgba(201,168,76,0.25);
+    }
+    .date-input.error {
+      border-color: var(--rose);
+      box-shadow: 0 0 12px rgba(194,97,110,0.3);
+      animation: shake 0.4s ease;
+    }
+    #inp-dd  { width: 3rem; }
+    #inp-mm  { width: 3rem; }
+    #inp-yyyy { width: 5rem; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-6px); }
+      40%     { transform: translateX(6px); }
+      60%     { transform: translateX(-4px); }
+      80%     { transform: translateX(4px); }
+    }
+
+    .lock-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: linear-gradient(135deg, var(--gold) 0%, #a8832a 100%);
+      border: none;
+      border-radius: 2px;
+      color: #1a0a0d;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+    }
+    .lock-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+    .lock-error {
+      margin-top: 1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--rose);
+      min-height: 1.2em;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .lock-error.show { opacity: 1; }
   </style>
 </head>
 <body>
   <div class="bg"></div>
-  <div class="wrapper">
+
+  <!-- LOCK SCREEN -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <span class="lock-icon">🔒</span>
+      <p class="lock-title">Este mensaje es especial</p>
+      <p class="lock-hint">ingresá tu fecha de nacimiento</p>
+      <div class="date-row">
+        <div class="date-field">
+          <label>día</label>
+          <input class="date-input" id="inp-dd" type="number" min="1" max="31" placeholder="DD" />
+        </div>
+        <span class="date-sep">/</span>
+        <div class="date-field">
+          <label>mes</label>
+          <input class="date-input" id="inp-mm" type="number" min="1" max="12" placeholder="MM" />
+        </div>
+        <span class="date-sep">/</span>
+        <div class="date-field">
+          <label>año</label>
+          <input class="date-input" id="inp-yyyy" type="number" min="1900" max="2099" placeholder="AAAA" />
+        </div>
+      </div>
+      <button class="lock-btn" onclick="checkPassword()">Abrir ✦</button>
+      <p class="lock-error" id="lock-error">Fecha incorrecta, intentá de nuevo 🌹</p>
+    </div>
+  </div>
+
+  <div class="wrapper" id="main-content" style="display:none;">
     <div class="card" style="position:relative;">
       <div class="glow-ring"></div>
 
@@ -327,10 +510,58 @@
         </div>
       </div>
     </div>
-  </div>
+  </div><!-- end main-content -->
 
   <script>
+    // ── Siempre mostrar el lock al cargar ──────────────
+    window.addEventListener('pageshow', () => {
+      document.getElementById('lock-screen').style.display = 'flex';
+      document.getElementById('lock-screen').classList.remove('hide');
+      document.getElementById('main-content').style.display = 'none';
+      document.getElementById('inp-dd').value = '';
+      document.getElementById('inp-mm').value = '';
+      document.getElementById('inp-yyyy').value = '';
+    });
+
+    // ── Password check ─────────────────────────────────
+    function checkPassword() {
+      const dd   = document.getElementById('inp-dd').value.padStart(2,'0');
+      const mm   = document.getElementById('inp-mm').value.padStart(2,'0');
+      const yyyy = document.getElementById('inp-yyyy').value;
+      const entered = dd + '/' + mm + '/' + yyyy;
+      const correct = '09/05/1998';
+      const errEl = document.getElementById('lock-error');
+      const inputs = document.querySelectorAll('.date-input');
+
+      if (entered === correct) {
+        document.getElementById('lock-screen').classList.add('hide');
+        setTimeout(() => {
+          document.getElementById('lock-screen').style.display = 'none';
+          const main = document.getElementById('main-content');
+          main.style.display = 'flex';
+          startEffects();
+        }, 800);
+      } else {
+        errEl.classList.add('show');
+        inputs.forEach(i => { i.classList.add('error'); setTimeout(() => i.classList.remove('error'), 600); });
+        setTimeout(() => errEl.classList.remove('show'), 2500);
+      }
+    }
+
+    // auto-jump between fields
+    document.addEventListener('DOMContentLoaded', () => {
+      const dd = document.getElementById('inp-dd');
+      const mm = document.getElementById('inp-mm');
+      const yyyy = document.getElementById('inp-yyyy');
+      dd.addEventListener('input', () => { if (dd.value.length >= 2) mm.focus(); });
+      mm.addEventListener('input', () => { if (mm.value.length >= 2) yyyy.focus(); });
+      yyyy.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+      dd.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+      mm.addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+    });
+
     // ── Falling petals / sparkles ──────────────────────
+    function startEffects() {
     const symbols = ['✨','🌹','🌸','✦','💛','🎀','🌺'];
     function createPetal() {
       const el = document.createElement('div');
@@ -348,15 +579,17 @@
     for (let i = 0; i < 6; i++) createPetal();
 
     // ── Background stars ───────────────────────────────
-    for (let i = 0; i < 60; i++) {
-      const s = document.createElement('div');
-      s.className = 'star';
-      s.style.top = Math.random() * 100 + 'vh';
-      s.style.left = Math.random() * 100 + 'vw';
-      s.style.animationDuration = (2 + Math.random() * 4) + 's';
-      s.style.animationDelay = (Math.random() * 5) + 's';
-      document.body.appendChild(s);
-    }
+      for (let i = 0; i < 60; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        s.style.top = Math.random() * 100 + 'vh';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.animationDuration = (2 + Math.random() * 4) + 's';
+        s.style.animationDelay = (Math.random() * 5) + 's';
+        document.body.appendChild(s);
+      }
+    } // end startEffects
   </script>
 </body>
 </html>
+
